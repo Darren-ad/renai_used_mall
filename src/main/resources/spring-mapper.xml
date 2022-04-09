@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- spring整合Mybatis相关的配置文件-->
+
+
+    <!-- 1、加载数据库配置文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+
+    <!-- 2、定义数据源：若需要更换数据源只需要导入依赖，修改class属性值跟property标签-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <!--        配置初始化大小，最大，最小-->
+        <property name="initialSize" value="${jdbc.init}"></property>
+        <property name="minIdle" value="${jdbc.minIdle}"></property>
+        <property name="maxActive" value="${jdbc.maxActive}"></property>
+
+        <!--         配置获取连接等待超时时间-->
+        <property name="maxWait" value="60000"></property>
+
+        <!--        配置间隔多久时间才能进行一次检测，检测需要关闭的空闲连接，单位是毫秒-->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+
+        <!--        配置一个连接池中最小生存时间，单位是毫秒-->
+        <property name="minEvictableIdleTimeMillis" value="300000"></property>
+    </bean>
+
+    <!-- 3、定义SqlSessionFactory-->
+    <!-- SqlSessionFactory需要注入数据源跟Mybatis配置文件路径，这样Mybatis的配置文件才能生效-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:/mapper/*.xml"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+
+<!--    4.扫描映射器-->
+<!--    MapperScannerConfigurer会自动扫描指定包下的所有mapper接口，为我们生成mapper接口的实现类并注入到Spring容器中。-->
+<!--    注入Spring容器中的的命名策略是使用映射器的非大写的非完全限定类名。可以通过注解@Repository("xx")来修改。-->
+<!--    MapperScannerConfigurer是需要使用sqlSessionFactory的，但是当只有一个的时候可以省略，-->
+<!--    如果要显示注入可以使用如下代码注入来注入，注意这里引用上面的sqlSessionFactory，但是是value的属性值，而不是ref。-->
+<!--    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.darren.ssm.mapper"/>
+        <!-- 注入sqlSessionFactory,如果只有一个数据源可省略，自动装配，是value属性，不是ref -->
+        <!-- <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/> -->
+    </bean>
+
+
+</beans>
