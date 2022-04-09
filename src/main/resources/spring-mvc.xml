@@ -15,7 +15,13 @@
     <context:component-scan base-package="cn.darren.ssm.controller" ></context:component-scan>
 
     <!--     静态资源默认的servlet配置-->
-    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+<!--    <mvc:default-servlet-handler></mvc:default-servlet-handler>-->
+    <mvc:resources mapping="/AmazeUI-2.4.2/**" location="/AmazeUI-2.4.2/"/>
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/basic/**" location="/basic/"/>
+    <mvc:resources mapping="/images/**" location="/images/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+
 
     <!--    注解驱动-->
     <mvc:annotation-driven>
