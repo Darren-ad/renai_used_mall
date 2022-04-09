@@ -38,18 +38,25 @@
 
     </mvc:annotation-driven>
 
-    <!--    视图解析器
-          作用 ：1.捕获后端控制器的返回值 如果返回的是hello
-                2.解析：在返回值前后拼接 "/hello.jsp"
-    -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 
-        <!--        前缀-->
-        <property name="prefix" value="/"></property>
-        <!--        后缀-->
-        <property name="suffix" value=".jsp"></property>
+<!--    视图解析器-->
+    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="order" value="1"/>
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="templateEngine" ref="templateEngine"/>
+    </bean>
+    <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+    </bean>
+    <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/templates/"/>
+        <property name="suffix" value=".html"/>
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="templateMode" value="HTML5"/>
+        <property name="cacheable" value="false"/>
     </bean>
 
+    <mvc:resources mapping="/**" location="/WEB-INF/templates/"/>
 
 </beans>
 
