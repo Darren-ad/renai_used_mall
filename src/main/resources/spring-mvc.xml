@@ -16,11 +16,10 @@
 
     <!--     静态资源默认的servlet配置-->
 <!--    <mvc:default-servlet-handler></mvc:default-servlet-handler>-->
-    <mvc:resources mapping="/AmazeUI-2.4.2/**" location="/AmazeUI-2.4.2/"/>
     <mvc:resources mapping="/css/**" location="/css/"/>
-    <mvc:resources mapping="/basic/**" location="/basic/"/>
-    <mvc:resources mapping="/images/**" location="/images/"/>
+    <mvc:resources mapping="/images/**" location="/image/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/img/**" location="/img/"/>
 
 
     <!--    注解驱动-->
